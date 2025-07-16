@@ -12,7 +12,7 @@
       "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "out"  // or "build", "public", etc. (match your frontend's build output)
+        "distDir": "out"  
       }
     }
   ],
@@ -23,7 +23,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/out/$1"  // Must match `distDir` above
+      "dest": "/out/$1"  
     }
   ]
 }
