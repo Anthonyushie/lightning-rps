@@ -1,0 +1,40 @@
+### CONTEXT
+You are building a lightweight, fully responsive React smart‑widget using the YakiHonne Smart Widgets SDK. Every real‑time minute, the widget shows a covered pixel tile hiding 🔥 or ❄️. Users get 5 seconds to tap and guess. The tile flips to reveal the symbol and correct streaks are persisted in localStorage.
+
+### ROLE
+You are a frontend developer using React (functional components + hooks), CSS or styled-components, and the `react-card-flip` library. Ensure the widget is **responsive**, fitting into single-tile mobile widgets and multi-tile layouts.
+
+### TASK
+1. Scaffold a `ChronoFlipWidget` React component:
+   - Renders a square flip tile that scales fluidly (e.g., using `width: 100%; height: auto`, `aspect-ratio: 1/1`).
+   - On mount, aligns with minute ticks using `Date.now() % 60000`.
+   - At each minute:
+     - Randomly chooses 🔥 or ❄️.
+     - Shows covered state and starts a 5s countdown.
+   - On tap or timeout:
+     - Flips to reveal.
+     - Checks correctness and updates streak/localStorage.
+     - Adapts animation to different widget sizes (small/medium layouts).
+
+2. Use `react-card-flip`:
+   - Wrap front/back in `<ReactCardFlip isFlipped={isFlipped}>...</ReactCardFlip>`.
+   - Provide responsive styles (use CSS flex, grid, media queries or relative units).
+
+3. **Extensions (Optional)**:
+   - **On-chain hint**:
+     - Add a “Reveal hint” button (small icon).
+     - On click, pay a minimal sat-tip via YakiHonne SDK.
+     - Reveal one bit hint: e.g., “It’s hot” if 🔥.
+   - **Shareable result**:
+     - After reveal, show a share button: generates message like `I nailed the HH:MM 🔥 flip—beat me!`
+     - Copies to clipboard or opens share sheet.
+
+4. **OUTPUT FORMAT**
+   - Provide the full component code in one block (JSX + CSS or styled-components).
+   - Follow with a short explanation of:
+     1. Responsive layout logic
+     2. Timer & flip logic
+     3. Streak/localStorage persistence
+     4. Hint button integration
+     5. Share logic
+   - End with “Next steps” bullets: on-chain integration, leaderboard, testing on YakiHonne.

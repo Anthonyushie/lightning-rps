@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(45, 100%, 96%);
+  --foreground: hsl(0, 0%, 0%);
+  --muted: hsl(45, 50%, 85%);
+  --muted-foreground: hsl(0, 0%, 30%);
+  --popover: hsl(45, 100%, 96%);
+  --popover-foreground: hsl(0, 0%, 0%);
+  --card: hsl(45, 100%, 96%);
+  --card-foreground: hsl(0, 0%, 0%);
+  --border: hsl(0, 0%, 0%);
+  --input: hsl(45, 100%, 96%);
+  --primary: hsl(30, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(270, 100%, 80%);
+  --secondary-foreground: hsl(0, 0%, 0%);
+  --accent: hsl(120, 100%, 75%);
+  --accent-foreground: hsl(0, 0%, 0%);
+  --destructive: hsl(0, 100%, 60%);
+  --destructive-foreground: hsl(0, 0%, 0%);
+  --ring: hsl(0, 0%, 0%);
+  --radius: 0rem;
+  --bitcoin: hsl(39, 100%, 50%);
+  --neon-green: hsl(120, 100%, 50%);
+  --neon-pink: hsl(330, 100%, 70%);
+  --neon-blue: hsl(200, 100%, 60%);
+}
+
+.dark {
+  --background: hsl(0, 0%, 8%);
+  --foreground: hsl(45, 100%, 96%);
+  --muted: hsl(0, 0%, 15%);
+  --muted-foreground: hsl(45, 50%, 70%);
+  --popover: hsl(0, 0%, 8%);
+  --popover-foreground: hsl(45, 100%, 96%);
+  --card: hsl(0, 0%, 8%);
+  --card-foreground: hsl(45, 100%, 96%);
+  --border: hsl(45, 100%, 96%);
+  --input: hsl(0, 0%, 15%);
+  --primary: hsl(30, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(270, 100%, 80%);
+  --secondary-foreground: hsl(0, 0%, 0%);
+  --accent: hsl(120, 100%, 75%);
+  --accent-foreground: hsl(0, 0%, 0%);
+  --destructive: hsl(0, 100%, 60%);
+  --destructive-foreground: hsl(45, 100%, 96%);
+  --ring: hsl(45, 100%, 96%);
+  --radius: 0rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply antialiased bg-background text-foreground;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}
+
+@layer utilities {
+  /* Neo-Brutalist Styles */
+  .brutalist-card {
+    border: 4px solid black;
+    box-shadow: 8px 8px 0px black;
+    background: var(--card);
+    transform: translateZ(0);
+    transition: all 0.1s ease-out;
+  }
+
+  .brutalist-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 12px 12px 0px black;
+  }
+
+  .brutalist-card:active {
+    transform: translate(4px, 4px);
+    box-shadow: 4px 4px 0px black;
+  }
+
+  .brutalist-button {
+    border: 4px solid black;
+    box-shadow: 4px 4px 0px black;
+    background: var(--primary);
+    color: black;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.1s ease-out;
+    user-select: none;
+  }
+
+  .brutalist-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px black;
+  }
+
+  .brutalist-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+  }
+
+  .brutalist-button:disabled {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 4px 4px 0px black;
+  }
+
+  .pixel-border {
+    border: 4px solid black;
+    border-image: 
+      url("data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m0 0h100v100h-100z' fill='none' stroke='%23000' stroke-width='4'/%3e%3c/svg%3e") 
+      4 repeat;
+  }
+
+  .glitch-text {
+    position: relative;
+    font-family: 'Press Start 2P', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    animation: glitch 2s infinite;
+  }
+
+  .glitch-text::before,
+  .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .glitch-text::before {
+    animation: glitch-1 0.5s infinite;
+    color: var(--neon-pink);
+    z-index: -1;
+  }
+
+  .glitch-text::after {
+    animation: glitch-2 0.5s infinite;
+    color: var(--neon-blue);
+    z-index: -2;
+  }
+
+  .neon-glow {
+    box-shadow: 
+      0 0 5px var(--neon-green),
+      0 0 10px var(--neon-green),
+      0 0 15px var(--neon-green),
+      0 0 20px var(--neon-green);
+  }
+
+  .bitcoin-glow {
+    box-shadow: 
+      0 0 10px var(--bitcoin),
+      0 0 20px var(--bitcoin),
+      0 0 30px var(--bitcoin);
+  }
+
+  .pixel-shadow {
+    box-shadow: 
+      4px 0 0 black,
+      0 4px 0 black,
+      4px 4px 0 black,
+      8px 4px 0 black,
+      4px 8px 0 black,
+      8px 8px 0 black;
+  }
+
+  .rps-card {
+    border: 6px solid black;
+    box-shadow: 12px 12px 0px black;
+    background: var(--card);
+    transition: all 0.1s ease-out;
+    image-rendering: pixelated;
+  }
+
+  .rps-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 16px 16px 0px black;
+  }
+
+  .rps-card:active {
+    transform: translate(6px, 6px);
+    box-shadow: 6px 6px 0px black;
+  }
+
+  .pixel-emoji {
+    font-size: 4rem;
+    image-rendering: pixelated;
+    filter: 
+      drop-shadow(2px 2px 0px black) 
+      drop-shadow(-2px -2px 0px black) 
+      drop-shadow(2px -2px 0px black) 
+      drop-shadow(-2px 2px 0px black);
+  }
+
+  @keyframes glitch {
+    0%, 74%, 100% { transform: translate(0); }
+    75% { transform: translate(2px, 0); }
+    76% { transform: translate(-2px, 0); }
+    77% { transform: translate(2px, 0); }
+  }
+
+  @keyframes glitch-1 {
+    0%, 74%, 100% { transform: translate(0); }
+    75% { transform: translate(2px, 0); }
+    76% { transform: translate(-2px, 0); }
+    77% { transform: translate(2px, 0); }
+  }
+
+  @keyframes glitch-2 {
+    0%, 74%, 100% { transform: translate(0); }
+    75% { transform: translate(-2px, 0); }
+    76% { transform: translate(2px, 0); }
+    77% { transform: translate(-2px, 0); }
+  }
+
+  @keyframes pixel-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .animate-pixel-bounce {
+    animation: pixel-bounce 0.5s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+  }
+
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .bg-gradient-brutal {
+    background: linear-gradient(45deg, 
+      var(--primary) 0%, 
+      var(--secondary) 50%, 
+      var(--accent) 100%);
+  }
+
+  .text-pixel {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .text-pixel-lg {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .text-pixel-xl {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+}
