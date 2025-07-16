@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { useYakiHonne } from '@/contexts/YakiHonneContext';
 
 type Choice = 'rock' | 'paper' | 'scissors';
 type GameStatus = 'waiting' | 'connecting' | 'playing' | 'revealing' | 'result';
@@ -27,6 +28,8 @@ interface GameState {
 }
 
 const RockPaperScissors: React.FC = () => {
+  const { user, isReady, publishEvent, sendCustomData } = useYakiHonne();
+  
   const [gameState, setGameState] = useState<GameState>({
     status: 'waiting',
     players: [],
@@ -36,14 +39,12 @@ const RockPaperScissors: React.FC = () => {
   
   const [localPlayer, setLocalPlayer] = useState<Player>({
     id: Math.random().toString(36).substr(2, 9),
-    name: 'Player',
+    name: user?.display_name || user?.name || 'Player',
     stake: 100,
     connected: false,
     isReady: false
   });
 
-  const [nwcConnected, setNwcConnected] = useState(false);
-  const [nwcString, setNwcString] = useState('');
   const [balance, setBalance] = useState(1000);
 
   const choices: { [key in Choice]: string } = {
@@ -58,27 +59,15 @@ const RockPaperScissors: React.FC = () => {
     scissors: 'bg-green-500'
   };
 
-  // Mock NWC connection
-  const connectNWC = async () => {
-    if (!nwcString.trim()) {
-      toast({
-        title: 'Error',
-        description: 'Please enter your NWC connection string',
-        variant: 'destructive'
-      });
-      return;
+  // Update player name when user data is available
+  useEffect(() => {
+    if (user) {
+      setLocalPlayer(prev => ({
+        ...prev,
+        name: user.display_name || user.name || 'Player'
+      }));
     }
-
-    // Simulate connection
-    setTimeout(() => {
-      setNwcConnected(true);
-      setBalance(Math.floor(Math.random() * 5000) + 1000);
-      toast({
-        title: 'NWC Connected!',
-        description: `Connected to Alby wallet. Balance: ${balance} sats`,
-      });
-    }, 1000);
-  };
+  }, [user]);
 
   const createGame = () => {
     const gameId = Math.random().toString(36).substr(2, 9);
@@ -144,12 +133,19 @@ const RockPaperScissors: React.FC = () => {
           result
         }));
 
-        // Update balance
+        // Update balance and publish game result to Nostr
         if (result === 'win') {
           setBalance(prev => prev + localPlayer.stake);
           toast({
             title: 'You Won!',
             description: `+${localPlayer.stake} sats`,
+          });
+          
+          // Publish win to Nostr
+          publishEvent({
+            content: `⚡ Just won ${localPlayer.stake} sats playing Lightning Rock Paper Scissors! 🎉\n\nGame: ${choice} vs ${opponentChoice}\nResult: Victory! 🏆`,
+            tags: [['t', 'lightning'], ['t', 'gaming'], ['t', 'yakihonne'], ['t', 'rockpaperscissors']],
+            kind: 1
           });
         } else if (result === 'lose') {
           setBalance(prev => prev - localPlayer.stake);
@@ -158,10 +154,24 @@ const RockPaperScissors: React.FC = () => {
             description: `-${localPlayer.stake} sats`,
             variant: 'destructive'
           });
+          
+          // Publish loss to Nostr
+          publishEvent({
+            content: `⚡ Lost ${localPlayer.stake} sats playing Lightning Rock Paper Scissors 😅\n\nGame: ${choice} vs ${opponentChoice}\nResult: Defeat, but I'll be back! 💪`,
+            tags: [['t', 'lightning'], ['t', 'gaming'], ['t', 'yakihonne'], ['t', 'rockpaperscissors']],
+            kind: 1
+          });
         } else {
           toast({
             title: 'Draw!',
             description: 'No sats lost or gained',
+          });
+          
+          // Publish draw to Nostr
+          publishEvent({
+            content: `⚡ Draw in Lightning Rock Paper Scissors! 🤝\n\nGame: ${choice} vs ${opponentChoice}\nResult: Tie - no sats lost or gained`,
+            tags: [['t', 'lightning'], ['t', 'gaming'], ['t', 'yakihonne'], ['t', 'rockpaperscissors']],
+            kind: 1
           });
         }
       }, 2000);
@@ -211,35 +221,31 @@ const RockPaperScissors: React.FC = () => {
         </div>
       </div>
 
-      {/* NWC Connection */}
-      {!nwcConnected ? (
+      {/* YakiHonne Authentication */}
+      {!isReady ? (
         <Card className="brutalist-card p-6">
           <div className="space-y-4">
-            <h2 className="text-pixel-lg text-center">CONNECT ALBY NWC</h2>
-            <div className="space-y-3">
-              <Input
-                placeholder="nostr+walletconnect://..."
-                value={nwcString}
-                onChange={(e) => setNwcString(e.target.value)}
-                className="brutalist-button bg-white text-black"
-              />
-              <Button
-                onClick={connectNWC}
-                className="brutalist-button w-full bg-orange-500 hover:bg-orange-600"
-              >
-                CONNECT WALLET
-              </Button>
+            <h2 className="text-pixel-lg text-center">CONNECTING TO YAKIHONNE</h2>
+            <div className="text-center">
+              <div className="animate-pulse text-pixel text-orange-500">
+                ⚡ Authenticating with Nostr... ⚡
+              </div>
             </div>
             <div className="text-center text-pixel text-gray-600">
-              Connect your Alby wallet to stake sats
+              Connecting to YakiHonne for secure gameplay
             </div>
           </div>
         </Card>
       ) : (
         <>
-          {/* Balance & Stake */}
+          {/* User Info & Balance */}
           <Card className="brutalist-card p-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-pixel text-blue-500">
+                  PLAYER: {user?.display_name || user?.name || 'Player'}
+                </div>
+              </div>
               <div className="text-center">
                 <div className="text-pixel text-orange-500 bitcoin-glow">
                   BALANCE: {balance} SATS
