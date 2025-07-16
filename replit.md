@@ -25,6 +25,12 @@ Preferred communication style: Simple, everyday language.
 - **Session Management**: Built-in session handling with connect-pg-simple
 - **Development**: Hot reload with tsx for development server
 
+### YakiHonne Integration
+- **SDK**: YakiHonne Smart Widget Handler integrated for Nostr compatibility
+- **Authentication**: YakiHonne context provider manages user authentication
+- **Nostr Publishing**: Game results automatically published to Nostr network
+- **Widget Communication**: Secure parent-child iframe communication via YakiHonne SDK
+
 ### Database Architecture
 - **ORM**: Drizzle ORM with PostgreSQL dialect
 - **Connection**: Neon Database serverless connection
@@ -37,9 +43,10 @@ Preferred communication style: Simple, everyday language.
 
 ### Core Game Component
 - **RockPaperScissors**: Main game component with neo-brutalist design
-- **Features**: Real-time multiplayer, Bitcoin Lightning integration, Alby NWC connection
+- **Features**: Real-time multiplayer, Bitcoin Lightning integration, YakiHonne Nostr integration
 - **Design**: Pixelated graphics, brutal shadows, Press Start 2P font, retro gaming aesthetic
 - **Gameplay**: Stake sats, battle opponents, win/lose/draw mechanics
+- **Social**: Game results published to Nostr network via YakiHonne
 
 ### UI Components
 - **Neo-Brutalist Design**: Heavy borders, bold shadows, pixelated aesthetics
@@ -69,6 +76,7 @@ Preferred communication style: Simple, everyday language.
 - **UI Libraries**: Radix UI primitives, Lucide React icons
 - **Styling**: Tailwind CSS, class-variance-authority for component variants
 - **State Management**: TanStack Query for server state
+- **YakiHonne**: smart-widget-handler for Nostr integration
 - **Utilities**: date-fns for date manipulation, clsx for conditional classes
 
 ### Backend Dependencies
