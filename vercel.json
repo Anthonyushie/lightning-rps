@@ -6,25 +6,26 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["dist/**"],
-        "maxDuration": 30 
+        "maxDuration": 30
       }
     },
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "../dist/public"
+        "distDir": "dist/public"  // Removed `../` (Vercel paths are relative to root)
       }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/index.ts"
+      "dest": "/server"  // Changed from `/server/index.ts`
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/$1"
+      "dest": "/dist/public/$1",
+      "continue": true  // Allows fallthrough if file doesn’t exist
     }
   ]
 }
