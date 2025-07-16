@@ -5,7 +5,6 @@
       "src": "server/index.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"],
         "maxDuration": 30
       }
     },
@@ -13,19 +12,18 @@
       "src": "client/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/public"  // Removed `../` (Vercel paths are relative to root)
+        "distDir": "out"  // or "build", "public", etc. (match your frontend's build output)
       }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server"  // Changed from `/server/index.ts`
+      "dest": "/server"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/$1",
-      "continue": true  // Allows fallthrough if file doesn’t exist
+      "dest": "/out/$1"  // Must match `distDir` above
     }
   ]
 }
